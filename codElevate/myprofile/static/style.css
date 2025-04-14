@@ -1,7 +1,5 @@
 body {
     background-color: #F6CFBE;
-    /* for browsers which don't support gradients */
-    background-image: linear-gradient(to right, #F6CFBE, #B9DCF2);
     color: #253237;
 }
 
