@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - codElevate</title>
+    <link rel="stylesheet" href="{% static 'dashboard/dashboard.css' %}">
+</head>
+<body>
+    <nav class="dashboard-nav">
+        <div class="nav-brand">codElevate</div>
+        <div class="nav-links">
+            <a href="{% url 'dashboard-index' %}" class="active">Dashboard</a>
+            <a href="{% url 'courses-index' %}">Courses</a>
+            <a href="{% url 'profile-index' %}">Profile</a>
+            <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1>Welcome, {{ request.user.username }}!</h1>
+        <div class="dashboard-content">
+            <div class="dashboard-card">
+                <h2>Your Progress</h2>
+                <p>Start exploring our courses to begin your learning journey.</p>
+            </div>
+        </div>
+    </div>
+
+    <form id="logoutForm" action="{% url 'logout' %}" method="post" style="display: none;">
+        {% csrf_token %}
+    </form>
+</body>
+</html>
