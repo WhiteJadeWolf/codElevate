@@ -15,7 +15,7 @@ def index(request):
         else:
             messages.error(request, 'Invalid username or password')
             return redirect('login-index')
-    return render(request, 'login/login-index.html')
+    return render(request, 'login/index.html')
 
 def login(request):
     if request.method == 'POST':
