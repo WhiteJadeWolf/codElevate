@@ -190,8 +190,8 @@ deactivate
 
 ## Author
 
-- Dheeraj Singh (@Dhiraj2684)
 - Shuvrangshu Barua (@WhiteJadeWolf)
+- Dheeraj Singh (@Dhiraj2684)
 
 ---
 
