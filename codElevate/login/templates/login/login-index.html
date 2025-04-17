@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup - codElevate</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'login/login-auth.css' %}">
+</head>
+<body>
+    <div class="container">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="card" id="loginCard">
+            <h2>Login to codElevate</h2>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <p class="switch-text">Don't have an account? <a href="#" onclick="toggleCards()">Sign Up</a></p>
+        </div>
+
+        <div class="card" id="signupCard" style="display: none;">
+            <h2>Create Account</h2>
+            <form method="post" action="{% url 'signup' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password1" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password2" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+            <p class="switch-text">Already have an account? <a href="#" onclick="toggleCards()">Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        function toggleCards() {
+            const loginCard = document.getElementById('loginCard');
+            const signupCard = document.getElementById('signupCard');
+            
+            if (loginCard.style.display === 'none') {
+                loginCard.style.display = 'block';
+                signupCard.style.display = 'none';
+            } else {
+                loginCard.style.display = 'none';
+                signupCard.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
