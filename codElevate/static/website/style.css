@@ -1,11 +1,157 @@
+/* Base styles */
 body {
-    background-color: #F6CFBE;
-    /* for browsers which don't support gradients */
-    background-image: linear-gradient(to right, #F6CFBE, #B9DCF2);
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #F6CFBE, #B9DCF2);
+    color: #253237;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation */
+.navbar {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
     color: #253237;
 }
 
-h1 {
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.login-btn {
+    color: #253237;
+    border: 1px solid #253237;
+}
+
+.login-btn:hover {
+    background: #253237;
+    color: white;
+}
+
+.signup-btn {
+    background: #253237;
+    color: white;
+}
+
+.signup-btn:hover {
+    background: #364c54;
+    transform: translateY(-2px);
+}
+
+/* Hero section */
+.hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
     text-align: center;
-    font-size: 2em;
+}
+
+.hero-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: #253237;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #364c54;
+    margin-bottom: 3rem;
+}
+
+.hero-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.feature {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+}
+
+.feature h3 {
+    color: #253237;
+    margin-bottom: 1rem;
+}
+
+.feature p {
+    color: #666;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.cta-btn {
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.cta-btn.primary {
+    background: #253237;
+    color: white;
+}
+
+.cta-btn.primary:hover {
+    background: #364c54;
+    transform: translateY(-2px);
+}
+
+.cta-btn.secondary {
+    background: transparent;
+    border: 2px solid #253237;
+    color: #253237;
+}
+
+.cta-btn.secondary:hover {
+    background: rgba(37, 50, 55, 0.1);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #666;
 }
