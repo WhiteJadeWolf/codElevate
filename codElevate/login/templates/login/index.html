@@ -21,7 +21,7 @@
         
         <div class="card" id="loginCard">
             <h2>Login to codElevate</h2>
-            <form method="post" action="">
+            <form method="post" action="{% url 'login:index' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <input type="text" name="username" placeholder="Username" required>
@@ -36,7 +36,7 @@
 
         <div class="card" id="signupCard" style="display: none;">
             <h2>Create Account</h2>
-            <form method="post" action="{% url 'signup' %}">
+            <form method="post" action="{% url 'login:signup' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <input type="text" name="username" placeholder="Username" required>
@@ -45,10 +45,10 @@
                     <input type="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password1" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="Password" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password2" placeholder="Confirm Password" required>
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
                 </div>
                 <div class="form-group">
                     <select name="user_type" required class="form-select">
@@ -64,6 +64,11 @@
     </div>
 
     <script>
+        // Show signup form if URL has #signup hash
+        if (window.location.hash === '#signup') {
+            toggleCards();
+        }
+        
         function toggleCards() {
             const loginCard = document.getElementById('loginCard');
             const signupCard = document.getElementById('signupCard');
@@ -71,9 +76,11 @@
             if (loginCard.style.display === 'none') {
                 loginCard.style.display = 'block';
                 signupCard.style.display = 'none';
+                window.location.hash = '';
             } else {
                 loginCard.style.display = 'none';
                 signupCard.style.display = 'block';
+                window.location.hash = 'signup';
             }
         }
     </script>

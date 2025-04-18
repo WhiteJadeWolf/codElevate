@@ -12,8 +12,8 @@
         <nav class="navbar">
             <div class="navbar-brand">codElevate</div>
             <div class="nav-links">
-                <a href="{% url 'login-index' %}" class="nav-btn login-btn">Login</a>
-                <a href="{% url 'login-index' %}#signup" class="nav-btn signup-btn">Sign Up</a>
+                <a href="{% url 'login:index' %}" class="nav-btn login-btn">Login</a>
+                <a href="{% url 'login:index' %}#signup" class="nav-btn signup-btn">Sign Up</a>
             </div>
         </nav>
     </header>
@@ -37,8 +37,8 @@
                 </div>
             </div>
             <div class="cta-buttons">
-                <a href="{% url 'login-index' %}#signup" class="cta-btn primary">Get Started</a>
-                <a href="{% url 'login-index' %}" class="cta-btn secondary">Login</a>
+                <a href="{% url 'login:index' %}#signup" class="cta-btn primary">Get Started</a>
+                <a href="{% url 'login:index' %}" class="cta-btn secondary">Login</a>
             </div>
         </div>
     </main>
