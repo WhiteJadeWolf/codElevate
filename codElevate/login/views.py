@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from .models import UserType
 
 def index(request):
     if request.method == 'POST':
@@ -37,6 +38,11 @@ def signup(request):
         email = request.POST['email']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
+        user_type = request.POST.get('user_type')
+
+        if not user_type:
+            messages.error(request, 'Please select a user type')
+            return redirect('login-index')
 
         if password1 != password2:
             messages.error(request, 'Passwords do not match')
@@ -51,7 +57,7 @@ def signup(request):
             return redirect('login-index')
 
         user = User.objects.create_user(username=username, email=email, password=password1)
-        user.save()
+        UserType.objects.create(user=user, user_type=user_type)
         auth_login(request, user)
         return redirect('dashboard-index')
     

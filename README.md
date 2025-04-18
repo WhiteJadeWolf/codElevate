@@ -191,7 +191,7 @@ deactivate
 ## Author
 
 - Shuvrangshu Barua (@WhiteJadeWolf)
-- Dheeraj Singh (@Dhiraj2684)
+- Dheeraj Dubey (@Dhiraj2684)
 
 ---
 
