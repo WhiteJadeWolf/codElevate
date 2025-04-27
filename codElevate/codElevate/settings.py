@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'courses',
     'dashboard',
     'login',
+    'website',
 ]
 
 MIDDLEWARE = [
@@ -128,9 +129,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Authentication settings
-LOGIN_URL = 'login-index'
-LOGIN_REDIRECT_URL = 'dashboard-index'
-LOGOUT_REDIRECT_URL = 'login-index'
+LOGIN_URL = 'login:index'
+LOGIN_REDIRECT_URL = 'dashboard:index'
+LOGOUT_REDIRECT_URL = 'login:index'
 
 # Session settings
 SESSION_COOKIE_AGE = 86400  # 24 hours in seconds
