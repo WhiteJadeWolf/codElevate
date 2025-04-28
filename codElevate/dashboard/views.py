@@ -25,5 +25,4 @@ def index(request):
             context['in_progress_courses'] = context['total_courses'] - context['completed_courses']
     except UserType.DoesNotExist:
         pass
-    
     return render(request, 'dashboard/index.html', context)
