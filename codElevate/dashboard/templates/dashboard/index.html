@@ -13,7 +13,7 @@
         <div class="nav-brand">codElevate</div>
         <div class="nav-links">
             <a href="{% url 'dashboard:index' %}" class="active">Dashboard</a>
-            <a href="{% url 'courses-index' %}">Courses</a>
+            <a href="{% url 'courses:index' %}">Courses</a>
             <a href="{% url 'profile-index' %}">Profile</a>
             <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
         </div>
@@ -86,7 +86,7 @@
                     </div>
                     <div class="course-footer">
                         <p class="last-accessed">Last accessed: {{ enrollment.last_accessed|date:"M d, Y" }}</p>
-                        <a href="{% url 'courses-index' %}" class="continue-btn">Continue Learning</a>
+                        <a href="{% url 'courses:index' %}" class="continue-btn">Continue Learning</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -94,7 +94,7 @@
             {% else %}
             <div class="no-courses">
                 <p>You haven't enrolled in any courses yet.</p>
-                <a href="{% url 'courses-index' %}" class="browse-courses-btn">Browse Courses</a>
+                <a href="{% url 'courses:index' %}" class="browse-courses-btn">Browse Courses</a>
             </div>
             {% endif %}
         </div>

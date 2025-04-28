@@ -19,7 +19,6 @@ class Progress(models.Model):
     enrollment = models.OneToOneField(CourseEnrollment, on_delete=models.CASCADE, related_name='progress')
     completed_modules = models.IntegerField(default=0)
     total_modules = models.IntegerField(default=0)
-    last_completed_module = models.CharField(max_length=255, blank=True)
     
     def get_progress_percentage(self):
         if self.total_modules == 0:
