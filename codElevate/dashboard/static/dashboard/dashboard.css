@@ -1,18 +1,20 @@
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #F6CFBE;
-    /* for browsers which don't support gradients */
-    background-image: linear-gradient(to right, #F6CFBE, #B9DCF2);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #F6CFBE, #B9DCF2);
+    min-height: 100vh;
 }
 
 .dashboard-nav {
-    background-color: #253237;
+    background-color: rgba(37, 50, 55, 0.95);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .nav-brand {
@@ -31,45 +33,220 @@ body {
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 .nav-links a:hover, .nav-links a.active {
     background-color: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
 }
 
 .dashboard-container {
     max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
-h1 {
+.welcome-section {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.welcome-section h1 {
     color: #253237;
-    margin-bottom: 2rem;
+    margin: 0;
+    font-size: 2.5rem;
 }
 
-.dashboard-content {
+.user-type {
+    color: #555;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    color: #253237;
+    background: rgba(185, 220, 242, 0.3);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-info h3 {
+    margin: 0;
+    color: #666;
+    font-size: 1rem;
+}
+
+.stat-number {
+    margin: 0.5rem 0 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #253237;
+}
+
+.courses-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.courses-section h2 {
+    color: #253237;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+.courses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 }
 
-.dashboard-card {
+.course-card {
     background: white;
-    padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
 }
 
-.dashboard-card h2 {
-    color: #253237;
-    margin-top: 0;
-    margin-bottom: 1rem;
+.course-card:hover {
+    transform: translateY(-5px);
 }
 
-.dashboard-card p {
-    color: #666;
-    line-height: 1.5;
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1.5rem;
+}
+
+.course-header h3 {
     margin: 0;
+    color: #253237;
+    font-size: 1.2rem;
+}
+
+.status-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-badge.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.in-progress {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.progress-info {
+    margin-bottom: 1.5rem;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #253237;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.course-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.last-accessed {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.continue-btn {
+    background: #253237;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.continue-btn:hover {
+    background: #364c54;
+    transform: translateY(-2px);
+}
+
+.no-courses {
+    text-align: center;
+    padding: 3rem;
+}
+
+.no-courses p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.browse-courses-btn {
+    display: inline-block;
+    background: #253237;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.browse-courses-btn:hover {
+    background: #364c54;
+    transform: translateY(-2px);
 }

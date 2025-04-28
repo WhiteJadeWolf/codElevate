@@ -1,13 +1,126 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses</title>
-    <link rel="stylesheet" href="{% static 'courses/style.css' %}">
-</head>
-<body>
-    <h1>This is the Your Courses Page.</h1>
-</body>
-</html>
+
+{% block title %}Available Courses{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'courses/courses_style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> {# If using icons #}
+{% endblock %}
+
+{% block content %}
+<div class="courses-page-container">
+
+    <!-- Filters Sidebar -->
+    <aside class="filters-sidebar">
+        <h3>Filter & Sort</h3>
+        <form method="GET" action="{% url 'courses:index' %}">
+            
+            <div class="filter-section">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" name="search" id="search" class="form-control" placeholder="Search courses..." value="{{ current_search|default:'' }}">
+            </div>
+
+            <div class="filter-section">
+                <h4>Category</h4>
+                <ul class="filter-list">
+                    <li>
+                        <a href="?search={{ current_search|default:'' }}&level={{ current_level|default:'' }}&sort={{ current_sort|default:'' }}"
+                           class="{% if not current_category %}active{% endif %}">All Categories</a>
+                    </li>
+                    {% for cat in categories %}
+                    <li>
+                        <a href="?category={{ cat.name }}&search={{ current_search|default:'' }}&level={{ current_level|default:'' }}&sort={{ current_sort|default:'' }}"
+                           class="{% if current_category == cat.name %}active{% endif %}">{{ cat.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="filter-section">
+                <h4>Level</h4>
+                 <ul class="filter-list">
+                     <li>
+                        <a href="?level=&category={{ current_category|default:'' }}&search={{ current_search|default:'' }}&sort={{ current_sort|default:'' }}"
+                           class="{% if not current_level %}active{% endif %}">All Levels</a>
+                    </li>
+                    {% for lvl in levels %}
+                    <li>
+                         <a href="?level={{ lvl }}&category={{ current_category|default:'' }}&search={{ current_search|default:'' }}&sort={{ current_sort|default:'' }}"
+                            class="{% if current_level == lvl %}active{% endif %}">{{ lvl|title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+             <div class="filter-section">
+                <label for="sort" class="form-label">Sort By</label>
+                <select name="sort" id="sort" class="form-select">
+                    <option value="-created_at" {% if current_sort == '-created_at' %}selected{% endif %}>Newest First</option>
+                    <option value="created_at" {% if current_sort == 'created_at' %}selected{% endif %}>Oldest First</option>
+                    <option value="title" {% if current_sort == 'title' %}selected{% endif %}>Title (A-Z)</option>
+                    <option value="-title" {% if current_sort == '-title' %}selected{% endif %}>Title (Z-A)</option>
+                    <option value="duration" {% if current_sort == 'duration' %}selected{% endif %}>Duration (Shortest)</option>
+                    <option value="-duration" {% if current_sort == '-duration' %}selected{% endif %}>Duration (Longest)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="cta-btn primary filter-btn">Apply Filters</button>
+        </form>
+    </aside>
+
+    <!-- Main Course Listing -->
+    <section class="courses-list-section">
+        <h1 class="courses-header">Explore Courses</h1>
+
+        {% if current_category or current_level or current_search %}
+            <div class="filter-info">
+                Showing results {% if current_search %} for "<strong>{{ current_search }}</strong>"{% endif %}
+                {% if current_category %} in <strong>{{ current_category }}</strong>{% endif %}
+                {% if current_level %} at <strong>{{ current_level|title }}</strong> level{% endif %}.
+                <a href="{% url 'courses:index' %}" class="clear-filters">Clear Filters</a>
+            </div>
+        {% endif %}
+
+        <div class="courses-grid">
+            {% for course in courses %}
+            <div class="course-card">
+                <a href="{% url 'courses:course_detail' course.id %}" class="course-card-link">
+                    <div class="course-thumbnail">
+                        {% if course.thumbnail %}
+                            <img src="{{ course.thumbnail.url }}" alt="{{ course.title }} thumbnail">
+                        {% else %}
+                            <img src="{% static 'images/default_course.png' %}" alt="Default course thumbnail"> {# Assumes you have a default image #}
+                        {% endif %}
+                        <span class="level-badge level-{{ course.level }}">{{ course.get_level_display }}</span>
+                         {% if course.category %}
+                           <span class="category-badge">{{ course.category.name }}</span>
+                         {% endif %}
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">{{ course.title }}</h3>
+                        <p class="course-instructor">
+                            <i class="fas fa-chalkboard-teacher"></i> Instructor: {{ course.instructor.get_full_name|default:course.instructor.username|default:"N/A" }}
+                        </p>
+                        <p class="course-duration">
+                            <i class="fas fa-clock"></i> Approx. {{ course.duration }} hours
+                        </p>
+                        {# <p class="course-description-snippet">{{ course.description|truncatewords:15 }}</p> #}
+                    </div>
+                </a>
+                 <div class="course-card-footer">
+                      <a href="{% url 'courses:course_detail' course.id %}" class="cta-btn secondary view-details-btn">View Details</a>
+                 </div>
+            </div>
+            {% empty %}
+            <div class="no-courses-found">
+                <p>No courses match your criteria.</p>
+                 <a href="{% url 'courses:index' %}" class="cta-btn secondary">View All Courses</a>
+            </div>
+            {% endfor %}
+        </div>
+         {# Add Pagination Links here later if needed #}
+    </section>
+
+</div>
+{% endblock %}

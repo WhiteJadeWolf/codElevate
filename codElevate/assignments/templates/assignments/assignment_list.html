@@ -1,0 +1,84 @@
+{% extends 'base.html' %} 
+{% load humanize %} 
+{% load tz %}
+
+{% block title %}My Assignments{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>My Assignments</h2>
+    <hr>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming / Pending</h5>
+                    <p class="card-text display-4">{{ upcoming_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Assignments</h5>
+                    <p class="card-text display-4">{{ total_assignments }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if upcoming_pending %}
+    <h3>Upcoming & Pending Assignments</h3>
+    <div class="list-group mb-4">
+        {% for item in upcoming_pending %}
+            <a href="{% url 'assignments:assignment_detail' item.assignment.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ item.assignment.title }}</h5>
+                    <small class="text-muted">
+                        Due: {{ item.assignment.due_date|timezone:request.session.timezone|date:"D, M j, Y, P" }}
+                        ({{ item.assignment.due_date|naturaltime }}) 
+                    </small>
+                </div>
+                <p class="mb-1">Course: {{ item.assignment.course.title }}</p>
+                <small class="text-{% if item.assignment.is_past_due %}danger{% else %}info{% endif %}">Status: Not Submitted {% if item.assignment.is_past_due %}(Past Due){% endif %}</small>
+            </a>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>No upcoming or pending assignments.</p>
+    {% endif %}
+
+    {% if submitted_or_past %}
+    <h3>Submitted & Past Assignments</h3>
+     <div class="list-group">
+        {% for item in submitted_or_past %}
+            <a href="{% url 'assignments:assignment_detail' item.assignment.id %}" class="list-group-item list-group-item-action flex-column align-items-start {% if item.submission.is_submitted %}list-group-item-success{% else %}list-group-item-secondary{% endif %}">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ item.assignment.title }}</h5>
+                     <small class="text-muted">
+                        Due: {{ item.assignment.due_date|timezone:request.session.timezone|date:"D, M j, Y, P" }}
+                    </small>
+                </div>
+                 <p class="mb-1">Course: {{ item.assignment.course.title }}</p>
+                <small>
+                    Status:
+                    {% if item.submission.is_submitted %}
+                        Submitted on {{ item.submission.submitted_at|timezone:request.session.timezone|date:"M j, Y, P" }}
+                    {% else %}
+                        <span class="text-danger">Not Submitted (Past Due)</span>
+                    {% endif %}
+                </small>
+            </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+     {% if not upcoming_pending and not submitted_or_past %}
+        <div class="alert alert-info" role="alert">
+            You have no assignments for your enrolled courses yet.
+        </div>
+     {% endif %}
+
+</div>
+{% endblock %}

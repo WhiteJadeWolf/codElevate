@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-!bpv2x4g*u#!l22ix75s*!3o#s^)-mzo3h*ohac___u+!xi_jg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,10 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'myprofile',
     'courses',
+    'assignments',
     'dashboard',
     'login',
+    'website',
 ]
 
 MIDDLEWARE = [
@@ -128,9 +131,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Authentication settings
-LOGIN_URL = 'login-index'
-LOGIN_REDIRECT_URL = 'dashboard-index'
-LOGOUT_REDIRECT_URL = 'login-index'
+LOGIN_URL = 'login:index'
+LOGIN_REDIRECT_URL = 'dashboard:index'
+LOGOUT_REDIRECT_URL = 'login:index'
 
 # Session settings
 SESSION_COOKIE_AGE = 86400  # 24 hours in seconds

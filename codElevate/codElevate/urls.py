@@ -18,16 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.home,name='home'),
-    path('profile/', include('myprofile.urls')),
-    path('courses/', include('courses.urls')),
-    path('dashboard/', include('dashboard.urls')),
+    path('', include('website.urls')),
     path('login/', include('login.urls')),
-] 
+    path('courses/', include('courses.urls')),
+    path('assignments/', include('assignments.urls')),
+    path('dashboard/', include('dashboard.urls')),
+    path('profile/', include('myprofile.urls')),
+]
 
 # Serve static files during development
 if settings.DEBUG:

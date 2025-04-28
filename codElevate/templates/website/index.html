@@ -1,17 +1,50 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Home Page</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' href="{% static 'website/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>codElevate - Interactive Learning Management System</title>
+    <link rel="stylesheet" href="{% static 'website/style.css' %}">
 </head>
-
 <body>
-    <h1>cod-E-levate</h1>
-</body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">codElevate</div>
+            <div class="nav-links">
+                <a href="{% url 'login:index' %}" class="nav-btn login-btn">Login</a>
+                <a href="{% url 'login:index' %}#signup" class="nav-btn signup-btn">Sign Up</a>
+            </div>
+        </nav>
+    </header>
 
+    <main class="hero">
+        <div class="hero-content">
+            <h1>Welcome to codElevate</h1>
+            <p class="hero-subtitle">Elevate your learning experience with our interactive platform</p>
+            <div class="hero-features">
+                <div class="feature">
+                    <h3>Learn at Your Pace</h3>
+                    <p>Access courses anytime, anywhere</p>
+                </div>
+                <div class="feature">
+                    <h3>Expert Instructors</h3>
+                    <p>Learn from industry professionals</p>
+                </div>
+                <div class="feature">
+                    <h3>Interactive Learning</h3>
+                    <p>Engage with hands-on exercises</p>
+                </div>
+            </div>
+            <div class="cta-buttons">
+                <a href="{% url 'login:index' %}#signup" class="cta-btn primary">Get Started</a>
+                <a href="{% url 'login:index' %}" class="cta-btn secondary">Login</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 codElevate. All rights reserved.</p>
+    </footer>
+</body>
 </html>

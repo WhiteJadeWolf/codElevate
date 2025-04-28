@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load static %} {# Load static tag library #}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My LMS Site{% endblock %}</title> {# Default title, can be overridden #}
+
+    {# Link to your CSS - Example using Bootstrap, adjust as needed #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    {# Link to your custom CSS #}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> {# Adjust path if necessary #}
+
+    {% block extra_head %}{% endblock %} {# Placeholder for extra head elements #}
+</head>
+<body>
+
+    {# Example Navigation Bar - Adapt with your actual navbar #}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">codElevate</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+             {# Add links based on login status #}
+             {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'dashboard:index' %}">Dashboard</a> {# Example dashboard URL #}
+                </li>
+                 <li class="nav-item">
+                  <a class="nav-link" href="{% url 'courses:index' %}">Courses</a>
+                </li>
+                 <li class="nav-item">
+                  <a class="nav-link" href="{% url 'assignments:assignment_list' %}">Assignments</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'myprofile:profile' %}">Profile</a> {# Example profile URL #}
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="{% url 'login:logout' %}"> {# Example logout URL #}
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link nav-link">Logout</button>
+                    </form>
+                </li>
+             {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login:index' %}">Login</a> {# Example login URL #}
+                </li>
+             {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mt-4">
+        {# === Main Content Area === #}
+        {% block content %}
+            {# Child templates will insert their content here #}
+        {% endblock %}
+        {# ========================= #}
+    </main>
+
+    <footer class="mt-5 p-3 bg-light text-center">
+        <p>© {% now "Y" %} codElevate. All rights reserved.</p>
+        {% block footer_content %}{% endblock %}
+    </footer>
+
+    {# Link to your JS - Example using Bootstrap Bundle, adjust as needed #}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    {# Link to your custom JS #}
+    <script src="{% static 'js/script.js' %}"></script> {# Adjust path if necessary #}
+    {% block extra_scripts %}{% endblock %} {# Placeholder for extra page-specific scripts #}
+
+</body>
+</html>
