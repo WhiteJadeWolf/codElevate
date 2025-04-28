@@ -1,0 +1,338 @@
+/* Inherit body gradient from base.html or main style.css */
+
+.courses-page-container {
+    display: flex;
+    flex-direction: column;
+    /* Stack on small screens */
+    gap: 2rem;
+    max-width: 1400px;
+    /* Adjust max width as needed */
+    margin: 2rem auto;
+    padding: 0 1rem;
+    /* Add side padding */
+}
+
+@media (min-width: 992px) {
+    .courses-page-container {
+        flex-direction: row;
+        /* Side-by-side on larger screens */
+    }
+}
+
+/* --- Sidebar --- */
+.filters-sidebar {
+    flex: 0 0 280px;
+    /* Fixed width sidebar on larger screens */
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    align-self: flex-start;
+    /* Prevent stretching */
+}
+
+.filters-sidebar h3 {
+    color: #253237;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.filter-section {
+    margin-bottom: 1.5rem;
+}
+
+.filter-section h4 {
+    color: #364c54;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+}
+
+.filter-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filter-list li a {
+    display: block;
+    padding: 0.5rem 0.8rem;
+    text-decoration: none;
+    color: #364c54;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.filter-list li a:hover {
+    background-color: rgba(185, 220, 242, 0.3);
+    /* Light blue tint */
+}
+
+.filter-list li a.active {
+    background-color: #B9DCF2;
+    /* Theme blue */
+    color: #253237;
+    font-weight: 500;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #364c54;
+}
+
+.form-control,
+.form-select {
+    /* Basic form styling */
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    /* Include padding in width */
+}
+
+.filter-btn {
+    /* Adapt homepage button styles */
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+/* --- Main Content --- */
+.courses-list-section {
+    flex: 1;
+    /* Takes remaining space */
+}
+
+.courses-header {
+    color: #253237;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+.filter-info {
+    background-color: rgba(185, 220, 242, 0.2);
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    color: #364c54;
+    border: 1px solid rgba(185, 220, 242, 0.5);
+}
+
+.filter-info strong {
+    color: #253237;
+}
+
+.clear-filters {
+    margin-left: 1rem;
+    color: #253237;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.clear-filters:hover {
+    text-decoration: underline;
+}
+
+
+/* --- Courses Grid & Cards --- */
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* Responsive columns */
+    gap: 1.5rem;
+}
+
+.course-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.course-card-link {
+    text-decoration: none;
+    color: inherit;
+    /* Inherit text color */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    /* Allow link content to grow */
+}
+
+
+.course-thumbnail {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    /* 16:9 Aspect Ratio */
+    overflow: hidden;
+    background-color: #eee;
+    /* Placeholder color */
+}
+
+.course-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Crop image nicely */
+    transition: transform 0.3s ease;
+}
+
+.course-card:hover .course-thumbnail img {
+    transform: scale(1.05);
+}
+
+.level-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.level-beginner {
+    background-color: rgba(40, 167, 69, 0.8);
+}
+
+/* Green */
+.level-intermediate {
+    background-color: rgba(255, 193, 7, 0.8);
+}
+
+/* Yellow */
+.level-advanced {
+    background-color: rgba(220, 53, 69, 0.8);
+}
+
+/* Red */
+
+.category-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: rgba(37, 50, 55, 0.7);
+    /* Dark theme color */
+    color: white;
+}
+
+
+.course-content {
+    padding: 1rem;
+    flex-grow: 1;
+    /* Allow content to push footer down */
+}
+
+.course-title {
+    font-size: 1.15rem;
+    color: #253237;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+}
+
+.course-instructor,
+.course-duration {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.course-instructor i,
+.course-duration i {
+    color: #aaa;
+}
+
+.course-card-footer {
+    padding: 0 1rem 1rem 1rem;
+    /* Only padding at bottom */
+    margin-top: auto;
+    /* Push to bottom */
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+    text-align: right;
+}
+
+.view-details-btn {
+    padding: 0.5rem 1rem;
+    /* Smaller button */
+    font-size: 0.9rem;
+    /* Reuse secondary button style from homepage */
+}
+
+.no-courses-found {
+    grid-column: 1 / -1;
+    /* Span full width */
+    text-align: center;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    color: #666;
+}
+
+.no-courses-found p {
+    margin-bottom: 1.5rem;
+}
+
+
+/* Homepage/Dashboard Button Styles (ensure these are defined if not in base CSS) */
+.cta-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+}
+
+.cta-btn.primary {
+    background: #253237;
+    color: white;
+    border: none;
+}
+
+.cta-btn.primary:hover {
+    background: #364c54;
+    transform: translateY(-2px);
+}
+
+.cta-btn.secondary {
+    background: transparent;
+    border: 2px solid #253237;
+    color: #253237;
+}
+
+.cta-btn.secondary:hover {
+    background: rgba(37, 50, 55, 0.1);
+}

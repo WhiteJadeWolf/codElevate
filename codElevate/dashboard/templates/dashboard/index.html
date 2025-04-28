@@ -12,10 +12,11 @@
     <nav class="dashboard-nav">
         <div class="nav-brand">codElevate</div>
         <div class="nav-links">
-            <a href="{% url 'dashboard:index' %}" class="active">Dashboard</a>
-            <a href="{% url 'courses:index' %}">Courses</a>
-            <a href="{% url 'profile-index' %}">Profile</a>
-            <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+            <a href="{% url 'dashboard:index' %}" {% if request.resolver_match.app_name == 'dashboard' %}class="active"{% endif %}>Dashboard</a>
+            <a href="{% url 'courses:index' %}" {% if request.resolver_match.app_name == 'courses' %}class="active"{% endif %}>Courses</a>
+            <a href="{% url 'assignments:assignment_list' %}" {% if request.resolver_match.app_name == 'assignments' %}class="active"{% endif %}>Assignments</a>
+            <a href="{% url 'myprofile:profile' %}" {% if request.resolver_match.app_name == 'myprofile' %}class="active"{% endif %}>Profile</a>
+            <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">Logout</a> 
         </div>
     </nav>
 

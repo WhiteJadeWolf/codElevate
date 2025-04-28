@@ -1,0 +1,163 @@
+/* Inherit body gradient from base.html or main style.css */
+
+/* Profile container */
+.profile-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    text-align: center;
+    color: #253237;
+    /* Match navbar brand */
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    /* Adjust size */
+}
+
+/* Profile Card Layout */
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    /* Stack picture and details on small screens */
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .profile-card {
+        flex-direction: row;
+        /* Side-by-side on larger screens */
+    }
+}
+
+/* Profile Picture Section */
+.profile-picture-section {
+    flex-basis: 30%;
+    /* Adjust width */
+    text-align: center;
+}
+
+.profile-picture {
+    max-width: 180px;
+    /* Control max size */
+    height: auto;
+    border-radius: 50%;
+    /* Make it circular */
+    border: 4px solid #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+}
+
+/* Profile Details Section */
+.profile-details-section {
+    flex-basis: 70%;
+    /* Adjust width */
+}
+
+.profile-details-section h2 {
+    color: #253237;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+}
+
+.username-display {
+    color: #6c757d;
+    /* Muted color for username */
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.75rem;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+
+.detail-label {
+    font-weight: bold;
+    color: #364c54;
+    /* Match hero subtitle color */
+    display: block;
+    /* Label on top */
+    margin-bottom: 0.25rem;
+}
+
+.detail-value {
+    color: #253237;
+}
+
+.detail-value.bio {
+    line-height: 1.6;
+}
+
+
+/* Edit Button (using homepage CTA styles) */
+.profile-edit-btn {
+    display: inline-block;
+    /* Fit content */
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    /* Slightly smaller */
+}
+
+/* Edit Form Specific Styles */
+.profile-container.edit-mode {
+    background: rgba(255, 255, 255, 0.95);
+    /* Slightly more opaque for form */
+}
+
+.profile-form legend {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #364c54;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #B9DCF2;
+    /* Use theme color */
+    padding-bottom: 0.5rem;
+}
+
+.profile-form fieldset:first-of-type legend {
+    margin-top: 0;
+}
+
+
+.profile-form .form-control {
+    /* Style form inputs using Bootstrap classes if available */
+    margin-bottom: 1rem;
+}
+
+.profile-form label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.current-pic {
+    margin-bottom: 0.5rem;
+}
+
+.edit-picture .mb-3 {
+    /* Spacing for file input */
+    margin-top: 1rem;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+/* Alert styling (assumes Bootstrap classes) */
+.alert {
+    margin-bottom: 1.5rem;
+}

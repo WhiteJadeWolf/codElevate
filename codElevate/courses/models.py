@@ -8,7 +8,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
-    class meta:
+    class Meta:
         verbose_name_plural = 'Categories'
     
 class Course(models.Model):

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Profile{% endblock %}
+
+ {% block extra_head %}
+    <link rel="stylesheet" href="{% static 'myprofile/css/profile_style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container edit-mode">
+    <h1 class="profile-header">Edit Your Profile</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> {# Requires Bootstrap JS #}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="profile-form">
+        {% csrf_token %}
+
+        <div class="profile-card edit-card">
+             <div class="profile-picture-section edit-picture">
+                <img src="{{ profile.get_profile_picture_url }}" alt="Current Profile Picture" class="profile-picture current-pic">
+                <div class="mb-3">
+                    <label for="{{ profile_form.profile_picture.id_for_label }}" class="form-label">Change Profile Picture</label>
+                    {{ profile_form.profile_picture }}
+                     {% if profile_form.profile_picture.errors %}
+                         <div class="invalid-feedback d-block">
+                             {{ profile_form.profile_picture.errors|striptags }}
+                         </div>
+                     {% endif %}
+                </div>
+            </div>
+
+             <div class="profile-details-section edit-details">
+                <fieldset>
+                    <legend>Account Info</legend>
+                    {{ user_form.as_p }}
+                </fieldset>
+
+                 <fieldset>
+                    <legend>Profile Info</legend>
+                    {# Don't render picture field again, handled above #}
+                    {{ profile_form.bio.label_tag }}
+                    {{ profile_form.bio }}
+                     {% if profile_form.bio.errors %}
+                         <div class="invalid-feedback d-block">
+                             {{ profile_form.bio.errors|striptags }}
+                         </div>
+                     {% endif %}
+
+                    {{ profile_form.location.label_tag }}
+                    {{ profile_form.location }}
+                     {% if profile_form.location.errors %}
+                         <div class="invalid-feedback d-block">
+                             {{ profile_form.location.errors|striptags }}
+                         </div>
+                     {% endif %}
+                </fieldset>
+
+                <div class="form-actions">
+                     <button type="submit" class="cta-btn primary">Save Changes</button>
+                     <a href="{% url 'myprofile:profile' %}" class="cta-btn secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
