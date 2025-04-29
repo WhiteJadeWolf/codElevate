@@ -1,108 +1,102 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - codElevate</title>
+    <title>Dashboard | CodElevate</title>
     <link rel="stylesheet" href="{% static 'dashboard/dashboard.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <nav class="dashboard-nav">
-        <div class="nav-brand">codElevate</div>
-        <div class="nav-links">
-            <a href="{% url 'dashboard:index' %}" class="active">Dashboard</a>
-            <a href="{% url 'courses-index' %}">Courses</a>
-            <a href="{% url 'profile-index' %}">Profile</a>
-            <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
-        </div>
-    </nav>
-
-    <div class="dashboard-container">
-        {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                {{ message }}
+    <div class="container">
+        <nav class="sidebar">
+            <div class="logo-container">
+                <img src="{% static 'website/logo.png' %}" alt="Logo" class="logo">
+                <h2>CodElevate</h2>
             </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <div class="welcome-section">
-            <h1>Welcome, {{ request.user.username }}!</h1>
-            <p class="user-type">Role: {{ user_type|title }}</p>
-        </div>
-
-        {% if user_type == 'student' %}
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>Total Courses</h3>
-                    <p class="stat-number">{{ total_courses }}</p>
-                </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#">Dashboard</a></li>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Assignments</a></li>
+                <li><a href="#">Profile</a></li>
+            </ul>
+            <div class="logout">
+                <a href="#">Logout</a>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>Completed</h3>
-                    <p class="stat-number">{{ completed_courses }}</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-spinner"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>In Progress</h3>
-                    <p class="stat-number">{{ in_progress_courses }}</p>
-                </div>
-            </div>
-        </div>
+        </nav>
 
-        <div class="courses-section">
-            <h2>Your Enrolled Courses</h2>
-            {% if enrollments %}
-            <div class="courses-grid">
-                {% for enrollment in enrollments %}
-                <div class="course-card">
-                    <div class="course-header">
-                        <h3>{{ enrollment.course.title }}</h3>
-                        <span class="status-badge {% if enrollment.completed %}completed{% else %}in-progress{% endif %}">
-                            {{ enrollment.completed|yesno:"Completed,In Progress" }}
-                        </span>
+        <main class="main-content">
+            <h1>Welcome, Username!</h1>
+            <div class="chart-and-stats">
+                <div class="chart-container">
+                    <canvas id="courseChart"></canvas>
+                </div>
+                <div class="legend-and-numbers">
+                    <div class="chart-legend">
+                        <div><span class="completed"></span> Completed</div>
+                        <div><span class="ongoing"></span> Ongoing</div>
                     </div>
-                    <div class="progress-info">
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" style="width: {{ enrollment.progress.get_progress_percentage }}%"></div>
-                        </div>
-                        <p class="progress-text">{{ enrollment.progress.get_progress_percentage }}% Complete</p>
+                    <div class="course-stats">
+                        <p><strong>Courses Completed:</strong> 5</p>
+                        <p><strong>Courses Ongoing:</strong> 2</p>
                     </div>
-                    <div class="course-footer">
-                        <p class="last-accessed">Last accessed: {{ enrollment.last_accessed|date:"M d, Y" }}</p>
-                        <a href="{% url 'courses-index' %}" class="continue-btn">Continue Learning</a>
-                    </div>
+                    <button class="browse-btn">Browse Your Courses</button>
                 </div>
-                {% endfor %}
             </div>
-            {% else %}
-            <div class="no-courses">
-                <p>You haven't enrolled in any courses yet.</p>
-                <a href="{% url 'courses-index' %}" class="browse-courses-btn">Browse Courses</a>
+
+            <div class="assignment-section">
+                <h2>Upcoming Assignment Deadlines</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Assignment</th>
+                            <th>Deadline</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Assignment 1</td>
+                            <td>2025-05-01</td>
+                            <td><a href="#">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>Assignment 2</td>
+                            <td>2025-05-05</td>
+                            <td><a href="#">View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            {% endif %}
-        </div>
-        {% endif %}
+        </main>
     </div>
 
-    <form id="logoutForm" action="{% url 'login:logout' %}" method="post" style="display: none;">
-        {% csrf_token %}
-    </form>
+    <script>
+        const ctx = document.getElementById('courseChart').getContext('2d');
+        const courseChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Completed', 'Ongoing'],
+                datasets: [{
+                    data: [5, 2],
+                    backgroundColor: ['#ED6E4B', '#5C6B73'],
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
 </body>
+
 </html>
