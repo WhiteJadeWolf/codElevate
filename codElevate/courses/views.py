@@ -145,7 +145,7 @@ def course_detail(request, course_id):
         'course': course,
         'is_enrolled': is_enrolled,
         'user_type': user_type.user_type if user_type else None,
-        'is_instructor': course.instructor == request.user,
+        'is_course_instructor': course.instructor == request.user,
     }
     return render(request, 'courses/detail.html', context)
 
