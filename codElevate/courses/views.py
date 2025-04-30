@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import Course, Category
 from login.models import UserType
 from dashboard.models import CourseEnrollment, Progress
+from django.db.models import Q
 
 def index(request):
     # Get filter parameters from request
@@ -21,13 +22,18 @@ def index(request):
     if level:
         courses = courses.filter(level=level)
     if search:
-        courses = (courses.filter(title__icontains=search)
-                   .union(courses.filter(description__icontains=search))
-                   .union(courses.filter(instructor__username__icontains=search)))
+        search_filter = (
+            Q(title__icontains=search) |
+            Q(description__icontains=search) |
+            Q(instructor__username__icontains=search)
+        )
+        courses = courses.filter(search_filter).distinct()
 
     # Apply sorting
     if sort in ['title', '-title', 'created_at', '-created_at', 'duration', '-duration']:
         courses = courses.order_by(sort)
+    else:
+        courses = courses.order_by('-created_at')
 
     # Get all categories for filter sidebar
     categories = Category.objects.all()
