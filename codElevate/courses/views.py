@@ -41,7 +41,7 @@ def index(request):
             Q(title__icontains=search) |
             Q(description__icontains=search) |
             Q(instructor__username__icontains=search)
-        )
+        ).distinct()
 
     # Apply sorting
     if sort in ['title', '-title', 'created_at', '-created_at', 'duration', '-duration']:
