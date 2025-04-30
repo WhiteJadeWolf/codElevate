@@ -1,11 +1,22 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 from .models import Course, Category
 from login.models import UserType
 from dashboard.models import CourseEnrollment, Progress
+from .forms import CourseForm
 
 def index(request):
+    # Get user type if authenticated
+    user_type = None
+    if request.user.is_authenticated:
+        try:
+            user_type = UserType.objects.get(user=request.user).user_type
+        except UserType.DoesNotExist:
+            pass
+
     # Get filter parameters from request
     category = request.GET.get('category')
     level = request.GET.get('level')
@@ -13,7 +24,12 @@ def index(request):
     sort = request.GET.get('sort', '-created_at')
 
     # Initialize the base queryset
-    courses = Course.objects.all()
+    if user_type == 'instructor':
+        # Instructors see only their own courses
+        courses = Course.objects.filter(instructor=request.user)
+    else:
+        # Students and anonymous users see all courses
+        courses = Course.objects.all()
 
     # Apply filters
     if category:
@@ -21,9 +37,11 @@ def index(request):
     if level:
         courses = courses.filter(level=level)
     if search:
-        courses = (courses.filter(title__icontains=search)
-                   .union(courses.filter(description__icontains=search))
-                   .union(courses.filter(instructor__username__icontains=search)))
+        courses = courses.filter(
+            Q(title__icontains=search) |
+            Q(description__icontains=search) |
+            Q(instructor__username__icontains=search)
+        )
 
     # Apply sorting
     if sort in ['title', '-title', 'created_at', '-created_at', 'duration', '-duration']:
@@ -40,31 +58,91 @@ def index(request):
         'current_category': category,
         'current_level': level,
         'current_search': search,
-        'current_sort': sort
+        'current_sort': sort,
+        'user_type': user_type
     }
 
-    # Add user type to context if user is logged in
-    if request.user.is_authenticated:
-        try:
-            user_type = UserType.objects.get(user=request.user)
-            context['user_type'] = user_type.user_type
-        except UserType.DoesNotExist:
-            pass
-
+    # Use different template for instructors
+    if user_type == 'instructor':
+        return render(request, 'courses/instructor_index.html', context)
     return render(request, 'courses/index.html', context)
+
+@login_required
+def create_course(request):
+    # Check if user is an instructor
+    try:
+        user_type = UserType.objects.get(user=request.user)
+        if user_type.user_type != 'instructor':
+            raise PermissionDenied
+    except UserType.DoesNotExist:
+        raise PermissionDenied
+
+    if request.method == 'POST':
+        form = CourseForm(request.POST, request.FILES)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.instructor = request.user
+            course.save()
+            messages.success(request, 'Course created successfully!')
+            return redirect('courses:course_detail', course_id=course.id)
+    else:
+        form = CourseForm()
+
+    return render(request, 'courses/create_course.html', {'form': form})
+
+@login_required
+def edit_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    
+    # Check if user is the course instructor
+    if course.instructor != request.user:
+        raise PermissionDenied
+    
+    if request.method == 'POST':
+        form = CourseForm(request.POST, request.FILES, instance=course)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Course updated successfully!')
+            return redirect('courses:course_detail', course_id=course.id)
+    else:
+        form = CourseForm(instance=course)
+    
+    return render(request, 'courses/edit_course.html', {'form': form, 'course': course})
+
+@login_required
+def delete_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    
+    # Check if user is the course instructor
+    if course.instructor != request.user:
+        raise PermissionDenied
+    
+    if request.method == 'POST':
+        course.delete()
+        messages.success(request, 'Course deleted successfully!')
+        return redirect('courses:index')
+    
+    return render(request, 'courses/delete_course_confirm.html', {'course': course})
 
 @login_required
 def course_detail(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     
+    try:
+        user_type = UserType.objects.get(user=request.user)
+    except UserType.DoesNotExist:
+        user_type = None
+    
     # Check if user is enrolled
     is_enrolled = False
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and user_type and user_type.user_type == 'student':
         is_enrolled = course.enrollments.filter(student=request.user).exists()
 
     context = {
         'course': course,
         'is_enrolled': is_enrolled,
+        'user_type': user_type.user_type if user_type else None,
+        'is_instructor': course.instructor == request.user,
     }
     return render(request, 'courses/detail.html', context)
 

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Courses</h2>
+        <a href="{% url 'courses:create_course' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create New Course
+        </a>
+    </div>
+
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <form method="get" class="form-inline">
+                <div class="input-group mb-2 mr-sm-2">
+                    <input type="text" name="search" class="form-control" placeholder="Search courses..." value="{{ current_search }}">
+                </div>
+                <select name="category" class="form-control mb-2 mr-sm-2">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                    <option value="{{ category.name }}" {% if category.name == current_category %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <select name="level" class="form-control mb-2 mr-sm-2">
+                    <option value="">All Levels</option>
+                    {% for level in levels %}
+                    <option value="{{ level }}" {% if level == current_level %}selected{% endif %}>
+                        {{ level }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <select name="sort" class="form-control mb-2 mr-sm-2">
+                    <option value="-created_at" {% if current_sort == '-created_at' %}selected{% endif %}>Newest First</option>
+                    <option value="created_at" {% if current_sort == 'created_at' %}selected{% endif %}>Oldest First</option>
+                    <option value="title" {% if current_sort == 'title' %}selected{% endif %}>Title A-Z</option>
+                    <option value="-title" {% if current_sort == '-title' %}selected{% endif %}>Title Z-A</option>
+                </select>
+                <button type="submit" class="btn btn-primary mb-2">Apply Filters</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="row">
+        {% if courses %}
+            {% for course in courses %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if course.thumbnail %}
+                    <img src="{{ course.thumbnail.url }}" class="card-img-top" alt="{{ course.title }}">
+                    {% else %}
+                    <img src="{% static 'courses/default-course.jpg' %}" class="card-img-top" alt="Default Course Image">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                        <div class="mb-2">
+                            <span class="badge bg-primary">{{ course.category.name }}</span>
+                            <span class="badge bg-secondary">{{ course.level }}</span>
+                            <span class="badge bg-info">{{ course.duration }} hours</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group w-100">
+                            <a href="{% url 'courses:course_detail' course.id %}" class="btn btn-outline-primary">View</a>
+                            <a href="{% url 'courses:edit_course' course.id %}" class="btn btn-outline-secondary">Edit</a>
+                            <a href="{% url 'courses:delete_course' course.id %}" class="btn btn-outline-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="col-12 text-center">
+            <p>You haven't created any courses yet.</p>
+            <a href="{% url 'courses:create_course' %}" class="btn btn-primary">Create Your First Course</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

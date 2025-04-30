@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Course Header -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ course.title }}</h2>
+                    <p class="text-muted">
+                        <span class="badge bg-primary">{{ course.category.name }}</span>
+                        <span class="badge bg-secondary">{{ course.level }}</span>
+                        <span class="badge bg-info">{{ course.duration }} hours</span>
+                    </p>
+                    <p class="card-text">{{ course.description }}</p>
+                    <p class="text-muted">Instructor: {{ course.instructor.username }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <!-- Action Card -->
+            <div class="card">
+                <div class="card-body">
+                    {% if user_type == 'instructor' and is_instructor %}
+                        <!-- Instructor Actions -->
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'courses:edit_course' course.id %}" class="btn btn-primary">Edit Course</a>
+                            <a href="{% url 'courses:delete_course' course.id %}" class="btn btn-danger">Delete Course</a>
+                        </div>
+                    {% elif user_type == 'student' %}
+                        <!-- Student Actions -->
+                        {% if is_enrolled %}
+                            <form method="post" action="{% url 'courses:unenroll' course.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning w-100">Unenroll from Course</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{% url 'courses:enroll' course.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success w-100">Enroll in Course</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Course Info Card -->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Course Information</h5>
+                    <ul class="list-unstyled">
+                        <li><strong>Level:</strong> {{ course.level }}</li>
+                        <li><strong>Duration:</strong> {{ course.duration }} hours</li>
+                        <li><strong>Category:</strong> {{ course.category.name }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
