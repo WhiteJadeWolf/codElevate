@@ -1,0 +1,472 @@
+/* courses/static/courses/css/course_detail.css */
+
+/* --- Base & Variable Definitions (Assume they exist in base.css) --- */
+:root {
+    /* Re-declare or import from base.css if needed */
+    --color-bg-offwhite: #f8f9fa;
+    --color-primary-dark: #253237;
+    --color-primary-medium: #5C6B73;
+    --color-accent-light: #B9DCF2;
+    --color-accent-orange: #F34213;
+    --color-accent-peach: #F6CFBE;
+    --color-text-light: #FFFFFF;
+    --color-text-medium: #555;
+    --color-border-light: #e0e0e0;
+    --border-radius: 8px;
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 6px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Container & Breadcrumbs --- */
+.course-detail-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.course-detail-breadcrumb .breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.course-detail-breadcrumb .breadcrumb-item a {
+    color: var(--color-primary-dark);
+    text-decoration: none;
+}
+
+.course-detail-breadcrumb .breadcrumb-item a:hover {
+    color: var(--color-accent-orange);
+    text-decoration: underline;
+}
+
+.course-detail-breadcrumb .breadcrumb-item.active {
+    color: var(--color-text-medium);
+}
+
+.fa-chalkboard-teacher:before,
+.fa-tag:before,
+.fa-signal:before,
+.fa-clock:before,
+.fa-history:before,
+.fa-info-circle:before {
+    color: #dc3545;
+}
+
+/* --- Messages --- */
+.messages-container {
+    margin-bottom: 1.5rem;
+}
+
+/* Alert styles can remain as they were */
+
+/* --- Layout Grid --- */
+.course-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 992px) {
+    .course-detail-grid {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+        align-items: start;
+    }
+}
+
+/* --- Main Content Area --- */
+.course-main-content {
+    padding: 0;
+    min-width: 0;
+}
+
+.course-detail-title {
+    font-size: 2.4rem;
+    /* Slightly larger */
+    font-weight: 700;
+    /* Bolder */
+    color: var(--color-primary-dark);
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.course-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.8rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: 0.9rem;
+    color: var(--color-text-medium);
+}
+
+.course-header-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+
+    /* Apply side-by-side layout */
+    .course-header-flex {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .course-description-area {
+        order: 1;
+        /* Description on left */
+    }
+
+    .course-image-area {
+        order: 2;
+        /* Image on right */
+        margin-left: 0;
+        /* Reset mobile centering */
+        margin-right: 0;
+        flex-shrink: 0;
+    }
+}
+
+.course-description-area {
+    flex: 1 1 65%;
+    /* Takes more space */
+    min-width: 0;
+    /* Add background/padding if you want this block styled */
+    background-color: #ffffff;
+    padding: 1.5rem 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+}
+
+.course-description-area h2 {
+    font-size: 1.6rem;
+    color: var(--color-primary-dark);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+}
+
+.course-description-area p {
+    line-height: 1.7;
+    color: var(--color-text-medium);
+}
+
+.course-description-area .course-description {
+    background: none;
+    /* Remove background from inner div */
+    padding: 0;
+    box-shadow: none;
+    margin: 0;
+}
+
+.course-description-area .course-description h2 {
+    /* Remove double styling if needed */
+    border: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+
+.course-image-area {
+    flex: 1 1 30%;
+    /* Takes less space */
+    min-width: 0;
+    max-width: 320px;
+    /* Adjust max image width */
+    margin-left: auto;
+    /* Center stacked image */
+    margin-right: auto;
+}
+
+.course-thumbnail-main {
+    /* Styles for the new image container */
+    height: auto;
+    width: 100%;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
+    background-color: #eee;
+}
+
+.course-thumbnail-main img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 12.5;
+    object-fit: cover;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.meta-item i {
+    color: #aaa;
+}
+
+.meta-item strong {
+    color: var(--color-primary-medium);
+}
+
+/* --- Section Styling --- */
+.course-description,
+.course-content-section,
+.course-assignments-section {
+    background-color: #ffffff;
+    /* White background for sections */
+    padding: 1.5rem 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 2rem;
+}
+
+.course-description h2,
+.course-content-section h2,
+.course-assignments-section h2 {
+    font-size: 1.6rem;
+    color: var(--color-primary-dark);
+    margin-top: 0;
+    /* Remove top margin inside section */
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+}
+
+.icon-before {
+    margin-right: 0.75rem;
+    color: var(--color-accent-orange);
+    font-size: 1.3rem;
+    /* Make icon slightly smaller than heading */
+}
+
+.course-description p {
+    line-height: 1.7;
+    color: var(--color-text-medium);
+}
+
+/* --- Assignments Table Section --- */
+.course-assignments-section {
+    background-color: #ffffff;
+    padding: 1.5rem 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 2rem;
+}
+
+/* Add responsiveness for the table */
+.table-responsive {
+    overflow-x: auto;
+    /* Enable horizontal scroll on small screens */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+}
+
+.assignments-table {
+    /* Use same styles as dashboard if possible */
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    min-width: 500px;
+    /* Prevent excessive squashing on small screens */
+}
+
+.assignments-table th,
+.assignments-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: 0.95rem;
+    white-space: nowrap;
+    /* Prevent text wrapping in cells initially */
+}
+
+.assignments-table td:first-child {
+    white-space: normal;
+    /* Allow assignment title to wrap */
+}
+
+.assignments-table th {
+    background-color: var(--color-bg-offwhite);
+    color: var(--color-primary-dark);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.assignments-table tbody tr:hover {
+    background-color: #fdfdfd;
+}
+
+.assignments-table td a {
+    color: var(--color-primary-medium);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.assignments-table td a:hover {
+    text-decoration: underline;
+    color: var(--color-primary-dark);
+}
+
+/* Status styles (ensure these match dashboard/global styles) */
+.status-submitted {
+    color: #198754;
+    font-weight: bold;
+}
+
+.status-pending {
+    color: var(--color-accent-orange);
+    font-weight: bold;
+}
+
+.status-login {
+    color: #6c757d;
+    font-style: italic;
+}
+
+
+/* --- Sidebar --- */
+.course-sidebar {
+    position: sticky;
+    top: 90px;
+    /* Adjust based on actual navbar height */
+    align-self: start;
+    min-width: 0;
+}
+
+.sidebar-box {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 1.5rem;
+}
+
+/* --- Sidebar Progress Section --- */
+.sidebar-progress-section {
+    margin-top: 0;
+    /* Space above progress if thumbnail is present */
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.sidebar-progress-section.no-progress p {
+    font-size: 0.9rem;
+    color: var(--color-text-medium);
+    text-align: center;
+    margin: 0;
+    font-style: italic;
+}
+
+.sidebar-progress-section h4 {
+    font-size: 1.1rem;
+    color: var(--color-primary-dark);
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+}
+
+/* Progress bar styles (Ensure these match dashboard for consistency) */
+.course-card-progress .progress-bar-container {
+    height: 20px;
+    margin-bottom: 5px;
+    background-color: var(--color-accent-peach);
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.course-card-progress .progress-bar {
+    font-size: 0.7em;
+    height: 100%;
+    /* Use 100% height of container */
+    background-color: var(--color-accent-orange);
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: width 1s ease-in-out;
+    /* Add transition */
+}
+
+@keyframes progress-bar-stripes {
+    from {
+        background-position: 40px 0;
+    }
+
+    to {
+        background-position: 0 0;
+    }
+}
+
+.progress-bar.animated {
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+    background-size: 40px 40px;
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+.enrollment-actions .enrollment-status {
+    font-size: 1rem;
+    color: var(--color-primary-medium);
+    margin-bottom: 1rem;
+    margin-top: 0;
+    text-align: center;
+}
+
+/* Enrollment status styles (enrolled, etc.) remain okay */
+
+/* Button styles */
+.full-width-btn {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+/* Utility class */
+
+.cta-btn.danger-outline {
+    background-color: transparent;
+    color: #F34213;
+    border: 2px solid #F34213;
+}
+
+.cta-btn.danger-outline:hover {
+    background-color: #F34213;
+    color: #fce3d8;
+    border: 2px solid #253237;
+}
+
+.sidebar-box h4 {
+    font-size: 1.2rem;
+    color: var(--color-primary-dark);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-box p {
+    font-size: 0.95rem;
+    color: var(--color-text-medium);
+    line-height: 1.6;
+}

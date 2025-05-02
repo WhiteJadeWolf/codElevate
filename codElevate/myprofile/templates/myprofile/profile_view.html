@@ -4,8 +4,7 @@
 {% block title %}{{ user.username }}'s Profile{% endblock %}
 
 {% block extra_head %}
-    {# Load specific profile CSS if needed, otherwise rely on base.html styles #}
-    <link rel="stylesheet" href="{% static 'myprofile/css/profile_style.css' %}">
+    <link rel="stylesheet" href="{% static 'myprofile/profile_style.css' %}">
 {% endblock %}
 
 
@@ -21,19 +20,19 @@
             <h2>{{ user.get_full_name|default:user.username }}</h2>
             <p class="username-display">@{{ user.username }}</p>
 
-            <div class="detail-item">
-                <span class="detail-label">Email:</span>
-                <span class="detail-value">{{ user.email }}</span>
+            <div class="detail-item1">
+                <span class="detail-label1">Email:</span>
+                <span class="detail-value1">{{ user.email }}</span>
             </div>
 
-            <div class="detail-item">
-                <span class="detail-label">Location:</span>
-                <span class="detail-value">{{ profile.location|default:"Not specified" }}</span>
+            <div class="detail-item2">
+                <span class="detail-label2">Location:</span>
+                <span class="detail-value2">{{ profile.location|default:"Not specified" }}</span>
             </div>
 
-            <div class="detail-item">
-                <span class="detail-label">Bio:</span>
-                <p class="detail-value bio">{{ profile.bio|linebreaksbr|default:"No bio provided." }}</p>
+            <div class="detail-item3">
+                <span class="detail-label3">Bio:</span>
+                <span class="detail-value3">{{ profile.bio|linebreaksbr|default:"No bio provided." }}</span>
             </div>
 
              <a href="{% url 'myprofile:profile_edit' %}" class="cta-btn primary profile-edit-btn">Edit Profile</a>

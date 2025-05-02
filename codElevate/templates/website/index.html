@@ -5,46 +5,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>codElevate - Interactive Learning Management System</title>
-    <link rel="stylesheet" href="{% static 'website/style.css' %}">
+    <link rel="stylesheet" href="{% static 'website/homepage.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 <body>
     <header>
-        <nav class="navbar">
-            <div class="navbar-brand">codElevate</div>
-            <div class="nav-links">
-                <a href="{% url 'login:index' %}" class="nav-btn login-btn">Login</a>
-                <a href="{% url 'login:index' %}#signup" class="nav-btn signup-btn">Sign Up</a>
+        <nav class="navbar" id="main-nav">
+            <div class="container navbar-container">
+                <a href="/" class="navbar-brand">
+                    <img src="{% static 'website/codelevate_logo.png' %}" alt="codElevate Homepage Logo" class="navbar-logo-img">
+                </a>
+                <div class="nav-links">
+                    <a href="{% url 'login:index' %}" class="nav-btn login-btn">Login</a>
+                    <a href="{% url 'login:signup' %}" class="nav-btn signup-btn">Sign Up</a>
+                </div>
             </div>
         </nav>
     </header>
 
-    <main class="hero">
-        <div class="hero-content">
-            <h1>Welcome to codElevate</h1>
-            <p class="hero-subtitle">Elevate your learning experience with our interactive platform</p>
-            <div class="hero-features">
-                <div class="feature">
-                    <h3>Learn at Your Pace</h3>
-                    <p>Access courses anytime, anywhere</p>
-                </div>
-                <div class="feature">
-                    <h3>Expert Instructors</h3>
-                    <p>Learn from industry professionals</p>
-                </div>
-                <div class="feature">
-                    <h3>Interactive Learning</h3>
-                    <p>Engage with hands-on exercises</p>
+    <main>
+        <section class="hero" id="hero">
+            <div class="container"> 
+                <div class="hero-content">
+                    <h1 class="animate-on-scroll fade-in-up">Welcome to codElevate</h1>
+                    <p class="hero-subtitle animate-on-scroll fade-in-up" style="animation-delay: 0.2s;">Elevate your learning experience with our interactive platform.</p>
                 </div>
             </div>
-            <div class="cta-buttons">
-                <a href="{% url 'login:index' %}#signup" class="cta-btn primary">Get Started</a>
-                <a href="{% url 'login:index' %}" class="cta-btn secondary">Login</a>
-            </div>
-        </div>
+
+            <spline-viewer class='hero-spline-background' loading-anim-type="spinner-small-dark" url="https://prod.spline.design/S3jZK8kCOlageOa6/scene.splinecode"></spline-viewer>
+
+        </section>
+
+        <section class="features-section" id="features">
+             <div class="container">
+                 <div class="features-grid">
+                    <div class="feature animate-on-scroll fade-in-up" style="animation-delay: 0.3s;">
+                        <i class="fas fa-laptop-code feature-icon"></i>
+                        <h3>Learn at Your Pace</h3>
+                        <p>Access comprehensive courses anytime, anywhere, fitting learning into your schedule.</p>
+                    </div>
+                    <div class="feature animate-on-scroll fade-in-up" style="animation-delay: 0.5s;">
+                         <i class="fas fa-chalkboard-teacher feature-icon"></i>
+                        <h3>Expert Instructors</h3>
+                        <p>Gain insights and skills from experienced industry professionals and educators.</p>
+                    </div>
+                    <div class="feature animate-on-scroll fade-in-up" style="animation-delay: 0.7s;">
+                         <i class="fas fa-puzzle-piece feature-icon"></i>
+                        <h3>Interactive Learning</h3>
+                        <p>Engage with material through hands-on exercises, quizzes, and real-world projects.</p>
+                    </div>
+                </div>
+                 <div class="cta-buttons animate-on-scroll fade-in-up" style="animation-delay: 0.9s;">
+                    <a href="{% url 'login:signup' %}" class="cta-btn primary">Get Started Free</a>
+                    <a href="{% url 'courses:index' %}" class="cta-btn secondary">Explore Courses</a>
+                 </div>
+             </div>
+        </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 codElevate. All rights reserved.</p>
+         <div class="container">
+            <p>© {% now "Y" %} codElevate. All rights reserved.</p>
+         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+            elementsToAnimate.forEach(el => observer.observe(el));
+        });
+    </script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.89/build/spline-viewer.js"></script>
+
 </body>
 </html>
