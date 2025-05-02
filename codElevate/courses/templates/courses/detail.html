@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'courses/course_detail.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+
+{% block content %}
+<div class="course-detail-container">
+
+    <nav aria-label="breadcrumb" class="course-detail-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'courses:index' %}">Courses</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
+      </ol>
+    </nav>
+
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="course-detail-grid">
+        <div class="course-main-content">
+            <h1 class="course-detail-title">{{ course.title }}</h1>
+            <div class="course-meta">
+                 <span class="meta-item instructor">
+                    <i class="fas fa-chalkboard-teacher"></i> Instructor :
+                    <strong>{{ course.instructor.get_full_name|default:course.instructor.username|default:"N/A" }}</strong>
+                </span>
+                <span class="meta-item category">
+                    <i class="fas fa-tag"></i> Category :
+                    <strong>{{ course.category.name|default:"Uncategorized" }}</strong>
+                </span>
+                <span class="meta-item level">
+                    <i class="fas fa-signal"></i> Level :
+                     <strong>{{ course.get_level_display }}</strong>
+                </span>
+                 <span class="meta-item duration">
+                    <i class="fas fa-clock"></i> Duration :
+                     <strong>~{{ course.duration }} hours</strong>
+                </span>
+                 <span class="meta-item updated">
+                    <i class="fas fa-history"></i> Last Updated :
+                     <strong>{{ course.updated_at|date:"M Y" }}</strong>
+                </span>
+            </div>
+            <div class="course-header-flex">
+                <div class="course-description-area">
+                     <div class="course-description">
+                         <h2><i class="fas fa-info-circle icon-before"></i>About This Course</h2>
+                         <p>{{ course.description|linebreaksbr }}</p>
+                     </div>
+                </div>
+                <div class="course-image-area">
+                     <div class="course-thumbnail-main">    
+                         {% if course.thumbnail %}
+                            <img src="{{ course.thumbnail.url }}" alt="{{ course.title }} thumbnail">
+                         {% else %}
+                            <img src="{% static 'images/default_course.png' %}" alt="Default course thumbnail">
+                         {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <section class="course-assignments-section">
+                 <h2><i class="fas fa-tasks icon-before"></i>Assignments</h2>
+                 {% if course_assignments %}
+                     <div class="table-responsive"> 
+                         <table class="assignments-table"> 
+                             <thead>
+                                 <tr>
+                                     <th>Assignment Title</th>
+                                     <th>Due Date</th>
+                                     <th>Status</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 {% for item in course_assignments %}
+                                     <tr>
+                                         <td>
+                                             <a href="{% url 'assignments:assignment_detail' item.assignment.id %}">{{ item.assignment.title }}</a>
+                                         </td>
+                                         <td>{{ item.assignment.due_date|date:"D, M d, Y, P"|default:"N/A" }}</td>
+                                         <td>
+                                             {% if user.is_authenticated %}
+                                                 {% if item.is_submitted %}
+                                                     <span class="status-submitted">Submitted</span>
+                                                 {% else %}
+                                                     <span class="status-pending">Pending</span>
+                                                 {% endif %}
+                                              {% else %}
+                                                 <span class="status-login">Login to view</span>
+                                              {% endif %}
+                                         </td>
+                                     </tr>
+                                 {% endfor %}
+                             </tbody>
+                         </table>
+                     </div>
+                 {% else %}
+                     <p>No assignments have been added to this course yet.</p>
+                 {% endif %}
+             </section>
+
+        </div>
+
+        <aside class="course-sidebar">
+            <div class="sidebar-box enrollment-box">
+                {% if is_enrolled %}
+                    {% if enrollment and enrollment.progress %}
+                        <div class="sidebar-progress-section">
+                            <h4>Your Progress</h4>
+                            <div class="course-card-progress"> 
+                                <div class="progress-bar-container" title="{{ enrollment.progress.get_progress_percentage }}% Complete">
+                                    <div class="progress-bar animated" style="width: {{ enrollment.progress.get_progress_percentage }}%;">
+                                        {% if enrollment.progress.get_progress_percentage > 15 %}{{ enrollment.progress.get_progress_percentage }}%{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                         <div class="sidebar-progress-section no-progress">
+                             <p>Start the first lesson to track your progress!</p>
+                         </div>
+                    {% endif %}
+                {% endif %}
+
+                <div class="enrollment-actions">
+                    {% if user.is_authenticated %}
+                        {% if is_enrolled %}
+                            <p class="enrollment-status enrolled"><i class="fas fa-check-circle"></i> Enrolled</p>
+                                {% csrf_token %}
+                                <button type="submit" class="cta-btn danger-outline full-width-btn" onclick="return confirm('Are you sure you want to unenroll?');">Unenroll</button>
+                             </form>
+                        {% else %}
+                             <p class="enrollment-status">Ready to start?</p>
+                             <form action="{% url 'courses:enroll' course.id %}" method="post">
+                                 {% csrf_token %}
+                                 <button type="submit" class="cta-btn primary full-width-btn">Enroll Now</button>
+                             </form>
+                        {% endif %}
+                    {% else %}
+                        <p class="enrollment-status">Login to enroll.</p>
+                        <a href="{% url 'login:index' %}?next={{ request.path }}" class="cta-btn primary full-width-btn">Login to Enroll</a>
+                    {% endif %}
+                </div>
+            </div>
+        </aside>
+    </div>
+
+</div>
+{% endblock %}

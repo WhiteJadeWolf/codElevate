@@ -1,4 +1,3 @@
-# myprofile/admin.py
 from django.contrib import admin
 from .models import Profile
 
@@ -6,4 +5,4 @@ from .models import Profile
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'location')
     search_fields = ('user__username', 'user__email', 'location')
-    list_select_related = ('user',) # Optimization for user lookup
+    list_select_related = ('user',)

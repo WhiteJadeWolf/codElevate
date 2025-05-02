@@ -4,19 +4,17 @@ from django.contrib import messages
 from .models import Course, Category
 from login.models import UserType
 from dashboard.models import CourseEnrollment, Progress
+from assignments.models import Assignment, Submission
 from django.db.models import Q
 
 def index(request):
-    # Get filter parameters from request
     category = request.GET.get('category')
     level = request.GET.get('level')
     search = request.GET.get('search')
     sort = request.GET.get('sort', '-created_at')
 
-    # Initialize the base queryset
     courses = Course.objects.all()
 
-    # Apply filters
     if category:
         courses = courses.filter(category__name=category)
     if level:
@@ -29,13 +27,11 @@ def index(request):
         )
         courses = courses.filter(search_filter).distinct()
 
-    # Apply sorting
     if sort in ['title', '-title', 'created_at', '-created_at', 'duration', '-duration']:
         courses = courses.order_by(sort)
     else:
         courses = courses.order_by('-created_at')
 
-    # Get all categories for filter sidebar
     categories = Category.objects.all()
     levels = [choice[0] for choice in Course.LEVEL_CHOICES]
 
@@ -49,7 +45,6 @@ def index(request):
         'current_sort': sort
     }
 
-    # Add user type to context if user is logged in
     if request.user.is_authenticated:
         try:
             user_type = UserType.objects.get(user=request.user)
@@ -62,15 +57,34 @@ def index(request):
 @login_required
 def course_detail(request, course_id):
     course = get_object_or_404(Course, id=course_id)
-    
-    # Check if user is enrolled
     is_enrolled = False
+    enrollment = None
+    assignments_with_status = []
     if request.user.is_authenticated:
-        is_enrolled = course.enrollments.filter(student=request.user).exists()
+        try:
+            enrollment = CourseEnrollment.objects.select_related('progress').get(student=request.user, course=course)
+            is_enrolled = True
+        except:
+            is_enrolled = False
+            
+        assignments = Assignment.objects.filter(course=course).order_by('due_date')
+        submitted_assignment_ids = set(Submission.objects.filter(
+            assignment__in=assignments,
+            student=request.user,
+            is_submitted=True
+        ).values_list('assignment_id', flat=True))
+
+        for assignment in assignments:
+            assignments_with_status.append({
+                'assignment': assignment,
+                'is_submitted': assignment.id in submitted_assignment_ids
+            })
 
     context = {
         'course': course,
         'is_enrolled': is_enrolled,
+        'enrollment': enrollment,
+        'course_assignments': assignments_with_status,
     }
     return render(request, 'courses/detail.html', context)
 
@@ -99,20 +113,17 @@ def enroll_course(request, course_id):
     if request.method == 'POST':
         course = get_object_or_404(Course, id=course_id)
         
-        # Check if already enrolled
         if CourseEnrollment.objects.filter(student=request.user, course=course).exists():
             messages.warning(request, 'You are already enrolled in this course.')
             return redirect('courses:course_detail', course_id=course_id)
         
-        # Create enrollment
         enrollment = CourseEnrollment.objects.create(
             student=request.user,
             course=course
         )
-        # Create progress tracker
         Progress.objects.create(
             enrollment=enrollment,
-            total_modules=0  # You can set this based on your course structure
+            total_modules=0
         )
         
         messages.success(request, f'Successfully enrolled in {course.title}')

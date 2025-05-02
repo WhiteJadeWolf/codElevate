@@ -1,118 +1,264 @@
-/* Inherit body gradient from base.html or main style.css */
+@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Profile container */
+:root {
+    --color-bg-light: #f8f9fa;
+    --color-light-peach: #F6CFBE;
+    --color-light-blue: #B9DCF2;
+    --color-muted-blue: #5C6B73;
+    --color-dark-blue: #253237;
+    --color-accent-orange: #F34213;
+    --font-primary: 'Roboto', sans-serif;
+    --font-heading: 'Righteous', sans-serif;
+    --font-secondary: 'Roboto Condensed', sans-serif;
+    --border-radius: 8px;
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.06);
+    --shadow-medium: 0 6px 20px rgba(37, 50, 55, 0.1);
+}
+
 .profile-container {
     max-width: 900px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.profile-header {
-    text-align: center;
-    color: #253237;
-    /* Match navbar brand */
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
-    /* Adjust size */
-}
-
-/* Profile Card Layout */
-.profile-card {
-    display: flex;
-    flex-direction: column;
-    /* Stack picture and details on small screens */
-    gap: 2rem;
+    margin: 3rem auto;
+    padding: 1.5rem;
+    background: #f8f9fa86;
+    border-radius: var(--border-radius);
+    box-shadow: var(--color-accent-orange);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 @media (min-width: 768px) {
-    .profile-card {
-        flex-direction: row;
-        /* Side-by-side on larger screens */
+    .profile-container {
+        padding: 2.5rem;
     }
 }
 
-/* Profile Picture Section */
-.profile-picture-section {
-    flex-basis: 30%;
-    /* Adjust width */
+.profile-header {
+    font-family: var(--font-heading);
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-decoration-color: #f34413d2;
+    font-weight: 400;
     text-align: center;
+    color: var(--color-dark-blue);
+    margin-bottom: 2.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+
+    .profile-card {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 2.5rem;
+    }
+
+    .profile-card.edit-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-card:not(.edit-card) .profile-picture-section {
+        flex-basis: 30%;
+        width: auto;
+    }
+
+    .profile-card:not(.edit-card) .profile-details-section {
+        flex-basis: 70%;
+    }
+}
+
+.profile-picture-section {
+    flex-shrink: 0;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .profile-picture {
-    max-width: 180px;
-    /* Control max size */
-    height: auto;
+    width: 150px;
+    height: 150px;
+    max-width: 100%;
     border-radius: 50%;
-    /* Make it circular */
-    border: 4px solid #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: 5px solid #fff;
+    box-shadow: 0 0 0 2px var(--color-light-blue),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
     margin-bottom: 1rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* Profile Details Section */
+@media (min-width: 768px) {
+    .profile-picture {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+
 .profile-details-section {
-    flex-basis: 70%;
-    /* Adjust width */
+    padding-top: 1rem;
+    flex-grow: 1;
+    width: 100%;
 }
 
 .profile-details-section h2 {
-    color: #253237;
+    font-family: var(--font-secondary);
+    font-weight: 400;
+    color: var(--color-dark-blue);
     margin-top: 0;
     margin-bottom: 0.25rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    text-align: center;
+}
+
+.profile-details-section {
+    font-family: var(--font-heading);
+    font-weight: 100;
 }
 
 .username-display {
-    color: #6c757d;
-    /* Muted color for username */
+    display: block;
+    color: var(--color-muted-blue);
     font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-}
-
-.detail-item {
     margin-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.75rem;
+    text-align: center;
 }
 
-.detail-item:last-child {
-    border-bottom: none;
+@media (min-width: 768px) {
+
+    .profile-details-section h2,
+    .username-display {
+        text-align: left;
+
+    }
+}
+
+.detail-item1,
+.detail-item2,
+.detail-item3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--color-border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.detail-label1,
+.detail-label2,
+.detail-label3 {
+    font-family: 'Roboto Condensed';
+    font-weight: 600;
+    color: #f34413d2;
+}
+
+@media (min-width: 576px) {
+
+    .detail-item1,
+    .detail-item2,
+    .detail-item3 {
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: flex-start;
+        gap: 0.75rem;
+    }
+
+    .detail-label {
+        flex: 0 0 100px;
+        margin-bottom: 0;
+        text-align: right;
+    }
+
+    .detail-value {
+        flex: 1;
+    }
 }
 
 
 .detail-label {
-    font-weight: bold;
-    color: #364c54;
-    /* Match hero subtitle color */
-    display: block;
-    /* Label on top */
-    margin-bottom: 0.25rem;
+    font-weight: 600;
+
+    color: var(--color-muted-blue);
+
+    font-size: 0.9rem;
 }
 
-.detail-value {
+.detail-value1,
+.detail-value2,
+.detail-value3 {
+    font: var(--font-secondary);
+    color: var(--color-dark-blue);
+    font-size: 1.2rem;
+}
+
+.detail-value3 {
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+
+.profile-edit-btn {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.8rem 1.5rem;
+}
+
+.cta-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.cta-btn.primary {
+    background: #253237;
+    color: white;
+    border: none;
+}
+
+.cta-btn.primary:hover {
+    color: #ff8f70;
+    background: #364c54;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.cta-btn.secondary {
+    background: transparent;
+    border: 2px solid #253237;
     color: #253237;
 }
 
-.detail-value.bio {
-    line-height: 1.6;
+.cta-btn.secondary:hover {
+    color: #eee;
+    border-color: #F34213;
+    background: rgba(31, 38, 41, 0.5);
 }
 
-
-/* Edit Button (using homepage CTA styles) */
 .profile-edit-btn {
     display: inline-block;
-    /* Fit content */
     margin-top: 1.5rem;
     padding: 0.8rem 1.5rem;
-    /* Slightly smaller */
 }
 
-/* Edit Form Specific Styles */
 .profile-container.edit-mode {
     background: rgba(255, 255, 255, 0.95);
-    /* Slightly more opaque for form */
 }
 
 .profile-form legend {
@@ -122,7 +268,6 @@
     margin-top: 1.5rem;
     margin-bottom: 1rem;
     border-bottom: 2px solid #B9DCF2;
-    /* Use theme color */
     padding-bottom: 0.5rem;
 }
 
@@ -132,7 +277,6 @@
 
 
 .profile-form .form-control {
-    /* Style form inputs using Bootstrap classes if available */
     margin-bottom: 1rem;
 }
 
@@ -140,6 +284,12 @@
     font-weight: 500;
     margin-bottom: 0.3rem;
     display: block;
+    transition: transform 1s ease;
+}
+
+.profile-form label:hover {
+    color: #F34213;
+    transform: scale(1.1);
 }
 
 .current-pic {
@@ -147,7 +297,6 @@
 }
 
 .edit-picture .mb-3 {
-    /* Spacing for file input */
     margin-top: 1rem;
 }
 
@@ -157,7 +306,21 @@
     gap: 1rem;
 }
 
-/* Alert styling (assumes Bootstrap classes) */
 .alert {
     margin-bottom: 1.5rem;
+}
+
+.edit-details input[type="text"],
+.edit-details input[type="email"],
+.edit-details input[type="url"],
+.edit-details input[type="file"],
+.edit-details textarea {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #fff;
 }

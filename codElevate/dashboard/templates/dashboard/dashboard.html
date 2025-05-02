@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - {{ user.username }}{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'dashboard/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <header class="welcome-header">
+        <div class="welcome-text">
+            <h1>Welcome back, {{ user.first_name|default:user.username }}!</h1>
+            <p class="welcome-subtitle">Here's an overview of your learning progress.</p>
+        </div>
+        <div class="welcome-user-pic">
+             <img src="{{ profile.get_profile_picture_url }}" alt="Your Profile Picture" class="profile-picture-small">
+        </div>
+    </header>
+
+    {% if user_type == 'student' %}
+        <section class="student-dashboard">
+
+            <div class="student-stats">
+                <div class="stat-card">
+                    <h3>Total Enrolled</h3>
+                    <p>{{ total_courses }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>In Progress</h3>
+                    <p>{{ in_progress_courses }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Completed</h3>
+                    <p>{{ completed_courses }}</p>
+                </div>
+            </div>
+            {% if total_courses > 0 %}
+            <section class="progress-section dashboard-section"> 
+                <h2>Overall Progress</h2>
+                <div class="progress-bar-container" title="{{ overall_progress_percentage }}% Complete">
+                    <div class="progress-bar animated" style="width: {{ overall_progress_percentage }}%;">
+                        {% if overall_progress_percentage > 10 %}{{ overall_progress_percentage }}%{% endif %}
+                    </div>
+                </div>
+             </section>
+            {% endif %}
+            <section class="assignments-section dashboard-section"> 
+                <h2>Upcoming Assignments</h2>
+                {% if upcoming_assignments %}
+                    <div class="table-responsive"> 
+                        <table class="assignments-table">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Assignment Title</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in upcoming_assignments %}
+                                    <tr>
+                                        <td>{{ item.assignment.course.title }}</td>
+                                        <td>
+                                            <a href="{% url 'assignments:assignment_detail' item.assignment.id %}">{{ item.assignment.title }}</a>
+                                        </td>
+                                        <td>{{ item.assignment.due_date|date:"D, M d, Y" }}</td> 
+                                        <td>
+                                            {% if item.submission.is_submitted %}
+                                                <span class="status-submitted">Submitted</span>
+                                            {% else %}
+                                                <span class="status-pending">Pending</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="no-data-message">No upcoming assignments found. Great job!</p>
+                {% endif %}
+            </section>
+
+            <section class="courses-section dashboard-section"> 
+                <h2>Your Courses</h2>
+                <div class="course-cards-container">
+                    {% for enrollment in enrollments %}
+                        <div class="course-card">
+                            <div class="card-thumbnail-container"> 
+                                {% if enrollment.course.thumbnail %}
+                                    <img src="{{ enrollment.course.thumbnail.url }}" alt="{{ enrollment.course.title }} thumbnail" class="card-course-thumbnail">
+                                {% else %}
+                                    <img src="{% static 'images/default_course.png' %}" alt="Default course thumbnail" class="card-course-thumbnail">
+                                {% endif %}
+                            </div>
+                            <div class="course-card-content">
+                                <h3>
+                                    <a href="{% url 'courses:course_detail' enrollment.course.id %}">{{ enrollment.course.title }}</a>
+                                </h3>
+                                {% if enrollment.progress %}
+                                <div class="course-card-progress">
+                                    <div class="progress-bar-container" title="{{ enrollment.progress.get_progress_percentage }}% Complete">
+                                        <div class="progress-bar animated" style="width: {{ enrollment.progress.get_progress_percentage }}%;">
+                                            {% if enrollment.progress.get_progress_percentage > 15 %}{{ enrollment.progress.get_progress_percentage }}%{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="course-card-footer">
+                                Status: {{ enrollment.completed|yesno:"Completed,In Progress" }} | Last: {{ enrollment.last_accessed|date:"M d" }}
+                     </div>
+                        </div>
+                    {% empty %}
+                        <p class="no-data-message">You are not enrolled in any courses yet.</p>
+                        <a href="{% url 'courses:index' %}" class="cta-btn secondary">Browse Courses</a>
+                    {% endfor %}
+                </div>
+            </section>
+
+        </section>
+
+    {% elif user_type == 'instructor' %}
+        <section class="instructor-dashboard dashboard-section"> 
+            <h2>Your Courses</h2>
+             <div class="course-cards-container instructor-courses-list">
+                {% for course in instructor_courses %}
+                    <div class="course-card">
+                         <div class="card-thumbnail-container">
+                             {% if course.thumbnail %}
+                                 <img src="{{ course.thumbnail.url }}" alt="{{ course.title }} thumbnail" class="card-course-thumbnail">
+                             {% else %}
+                                 <img src="{% static 'images/default_course.png' %}" alt="Default course thumbnail" class="card-course-thumbnail">
+                             {% endif %}
+                         </div>
+                         <div class="course-card-content">
+                            <h3>
+                                <a href="{% url 'courses:course_detail' course.id %}">{{ course.title }}</a> 
+                            </h3>
+                         </div>
+                          <div class="course-card-footer">
+                              Created: {{ course.created_at|date:"M d, Y" }}
+                          </div>
+                    </div>
+                {% empty %}
+                    <p class="no-data-message">You have not created any courses yet.</p>
+                     <a href="#" class="cta-btn primary">Create New Course</a> 
+                {% endfor %}
+            </div>
+        </section>
+
+    {% else %}
+        <p>Welcome! Your dashboard view is currently unavailable.</p>
+    {% endif %}
+
+{% endblock %}

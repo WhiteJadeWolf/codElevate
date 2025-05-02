@@ -5,13 +5,12 @@
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'courses/courses_style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> {# If using icons #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
 <div class="courses-page-container">
 
-    <!-- Filters Sidebar -->
     <aside class="filters-sidebar">
         <h3>Filter & Sort</h3>
         <form method="GET" action="{% url 'courses:index' %}">
@@ -69,7 +68,6 @@
         </form>
     </aside>
 
-    <!-- Main Course Listing -->
     <section class="courses-list-section">
         <h1 class="courses-header">Explore Courses</h1>
 
@@ -90,7 +88,7 @@
                         {% if course.thumbnail %}
                             <img src="{{ course.thumbnail.url }}" alt="{{ course.title }} thumbnail">
                         {% else %}
-                            <img src="{% static 'images/default_course.png' %}" alt="Default course thumbnail"> {# Assumes you have a default image #}
+                            <img src="{% static 'images/default_course.png' %}" alt="Default course thumbnail"> 
                         {% endif %}
                         <span class="level-badge level-{{ course.level }}">{{ course.get_level_display }}</span>
                          {% if course.category %}
@@ -105,7 +103,7 @@
                         <p class="course-duration">
                             <i class="fas fa-clock"></i> Approx. {{ course.duration }} hours
                         </p>
-                        {# <p class="course-description-snippet">{{ course.description|truncatewords:15 }}</p> #}
+                        <p class="course-description-snippet">{{ course.description|truncatewords:15 }}</p> 
                     </div>
                 </a>
                  <div class="course-card-footer">
@@ -119,7 +117,6 @@
             </div>
             {% endfor %}
         </div>
-         {# Add Pagination Links here later if needed #}
     </section>
 
 </div>

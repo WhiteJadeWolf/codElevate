@@ -4,7 +4,7 @@
 {% block title %}Edit Profile{% endblock %}
 
  {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'myprofile/css/profile_style.css' %}">
+    <link rel="stylesheet" href="{% static 'myprofile/profile_style.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -45,7 +45,6 @@
 
                  <fieldset>
                     <legend>Profile Info</legend>
-                    {# Don't render picture field again, handled above #}
                     {{ profile_form.bio.label_tag }}
                     {{ profile_form.bio }}
                      {% if profile_form.bio.errors %}

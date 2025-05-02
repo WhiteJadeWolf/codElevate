@@ -1,77 +1,59 @@
+{% load static %}
 <!DOCTYPE html>
-{% load static %} {# Load static tag library #}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My LMS Site{% endblock %}</title> {# Default title, can be overridden #}
+    <title>{% block title %}codElevate LMS{% endblock %}</title>
 
-    {# Link to your CSS - Example using Bootstrap, adjust as needed #}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    {# Link to your custom CSS #}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"> {# Adjust path if necessary #}
 
-    {% block extra_head %}{% endblock %} {# Placeholder for extra head elements #}
+    <link rel="stylesheet" href="{% static 'website/homepage.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
 
-    {# Example Navigation Bar - Adapt with your actual navbar #}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">codElevate</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-             {# Add links based on login status #}
-             {% if user.is_authenticated %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'dashboard:index' %}">Dashboard</a> {# Example dashboard URL #}
-                </li>
-                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'courses:index' %}">Courses</a>
-                </li>
-                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'assignments:assignment_list' %}">Assignments</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'myprofile:profile' %}">Profile</a> {# Example profile URL #}
-                </li>
-                <li class="nav-item">
-                    <form method="post" action="{% url 'login:logout' %}"> {# Example logout URL #}
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-link nav-link">Logout</button>
-                    </form>
-                </li>
-             {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login:index' %}">Login</a> {# Example login URL #}
-                </li>
-             {% endif %}
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <header>
+        <nav class="navbar" id="main-nav"> 
+            <div class="container navbar-container">
 
-    <main class="container mt-4">
-        {# === Main Content Area === #}
+                <a href="/" class="navbar-brand"> 
+                    <img src="{% static 'website/codelevate_logo.png' %}" alt="codElevate Homepage Logo" class="navbar-logo-img">
+                </a>
+
+                <div class="nav-links">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard:index' %}" class="nav-link-item {% if request.resolver_match.view_name == 'dashboard:index' %}active{% endif %}">Dashboard</a>
+                        <a href="{% url 'courses:index' %}" class="nav-link-item {% if request.resolver_match.app_name == 'courses' %}active{% endif %}">Courses</a>
+                        <a href="{% url 'myprofile:profile' %}" class="nav-link-item {% if request.resolver_match.app_name == 'myprofile' %}active{% endif %}">Profile</a>
+                        <form method="post" action="{% url 'login:logout' %}" style="margin:0; display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-btn logout-btn">Logout</button> 
+                        </form>
+
+                    {% else %}
+                        <a href="{% url 'login:index' %}" class="nav-btn login-btn">Login</a>
+                        <a href="{% url 'login:signup' %}" class="nav-btn signup-btn">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="container mt-4"> 
         {% block content %}
-            {# Child templates will insert their content here #}
         {% endblock %}
-        {# ========================= #}
     </main>
 
-    <footer class="mt-5 p-3 bg-light text-center">
+    <footer class="mt-5 p-3 text-center"> 
         <p>© {% now "Y" %} codElevate. All rights reserved.</p>
         {% block footer_content %}{% endblock %}
     </footer>
 
-    {# Link to your JS - Example using Bootstrap Bundle, adjust as needed #}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    {# Link to your custom JS #}
-    <script src="{% static 'js/script.js' %}"></script> {# Adjust path if necessary #}
-    {% block extra_scripts %}{% endblock %} {# Placeholder for extra page-specific scripts #}
+    {% block extra_scripts %}{% endblock %}
 
 </body>
 </html>
