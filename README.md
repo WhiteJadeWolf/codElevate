@@ -184,7 +184,7 @@ deactivate
 
 ## License
 
-(not licensed yet)
+[MIT License](https://github.com/WhiteJadeWolf/codElevate/blob/main/LICENSE)
 
 ---
 
